@@ -17,7 +17,7 @@ function draw() {
 function generateRandomColors() {
   colors = [];
   for (let i = 0; i < gridSize * gridSize; i++) {
-    colors.push(color(random(255), random(255), random(255), 200));
+    colors.push(color(random(255), random(255), random(255), 210));
   }
 }
 
