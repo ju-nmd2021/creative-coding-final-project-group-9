@@ -15,6 +15,7 @@ function draw() {
   displayColorGrid();
 }
 
+// Generate random colors for initial grid
 function generateRandomColors() {
   colors = [];
   for (let i = 0; i < gridSize * (gridSize - 1); i++) {
@@ -22,6 +23,7 @@ function generateRandomColors() {
   }
 }
 
+// Displays the color grid
 function displayColorGrid() {
   for (let row = 0; row < gridSize - 1; row++) {
     for (let col = 0; col < gridSize; col++) {
@@ -29,6 +31,7 @@ function displayColorGrid() {
       let boxX = col * boxSize;
       let boxY = row * boxSize;
 
+      // Highlights selected boxes
       if (selectedColors.includes(index)) {
         stroke(0, 0, 0);
         strokeWeight(4);
