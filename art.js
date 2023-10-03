@@ -1,5 +1,5 @@
 let colors = [];
-let gridSize = 4;
+let gridSize = 5;
 let boxSize;
 let selectedColors = [];
 
@@ -17,13 +17,13 @@ function draw() {
 
 function generateRandomColors() {
   colors = [];
-  for (let i = 0; i < gridSize * gridSize; i++) {
+  for (let i = 0; i < gridSize * (gridSize - 1); i++) {
     colors.push(color(random(255), random(255), random(255), 210));
   }
 }
 
 function displayColorGrid() {
-  for (let row = 0; row < gridSize; row++) {
+  for (let row = 0; row < gridSize - 1; row++) {
     for (let col = 0; col < gridSize; col++) {
       let index = row * gridSize + col;
       let boxX = col * boxSize;
@@ -49,7 +49,7 @@ function mousePressed() {
   let index = row * gridSize + col;
 
   // checks if mouse is pressed within color grid
-  if (col >= 0 && col < gridSize && row >= 0 && row < gridSize) {
+  if (col >= 0 && col < gridSize && row >= 0 && row < gridSize - 1) {
     if (selectedColors.includes(index)) {
       selectedColors.splice(selectedColors.indexOf(index), 1);
     } else {
