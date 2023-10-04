@@ -80,19 +80,33 @@ function generateArt() {
     let randomIndex = floor(random(selectedColors.length));
     let selectedColor = colors[selectedColors[randomIndex]];
 
-    // draw a random shape with seleected color
-    fill(selectedColor);
-    noStroke();
+    // randomly chooses shapes
+    let shapeChoice = floor(random(3));
 
-    // random ellipse
-    let x = random(width);
-    let y = random(height);
-    let size = random(20, 100);
-    ellipse(x, y, size, size);
+    // draws a random shape with seleected color
+    if (shapeChoice === 0) {
+      // random ellipse
+      fill(selectedColor);
+      noStroke();
+      let x = random(width);
+      let y = random(height);
+      let size = random(20, 100);
+      ellipse(x, y, size, size);
+    } else if (shapeChoice === 1) {
+      // random rectangle
+      fill(selectedColor);
+      noStroke();
+      let x = random(width);
+      let y = random(height);
+      let w = random(20, 100);
+      let h = random(20, 100);
+      rect(x, y, w, h);
+    }
   }
   artGenerated = true;
 }
 
+// resets the the canvas
 function resetCanvas() {
   artCanvas.clear();
   selectedColors = [];
