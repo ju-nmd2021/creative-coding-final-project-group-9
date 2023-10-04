@@ -33,8 +33,8 @@ function displayColorGrid() {
 
       // Highlights selected boxes
       if (selectedColors.includes(index)) {
-        stroke(0, 0, 0);
-        strokeWeight(4);
+        stroke(48, 48, 48);
+        strokeWeight(2);
         noFill();
         rect(boxX, boxY, boxSize, boxSize);
       } else {
@@ -60,4 +60,8 @@ function mousePressed() {
     }
     displayColorGrid();
   }
+}
+
+function generateArt() {
+  console.log("Art generated");
 }
