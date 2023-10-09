@@ -1,36 +1,29 @@
 let colors = [];
+let numbers = [];
 let gridSize = 5;
 let boxSize;
 let selectedColors = [];
-let artCanvas;
-let artGenerated = false;
 
 function setup() {
   createCanvas(500, 500);
   boxSize = width / gridSize;
   noLoop();
-  generateRandomColors();
-
-  // create a separate canvas for art
-  artCanvas = createCanvas(500, 500);
-  artCanvas.position(0, 0);
-  artCanvas.style("z-index", "-1"); //places the art canvas behind the main canvas
-}
-
-function draw() {
-  background(255);
+  generateRandomColorsAndNumbers();
   displayColorGrid();
 }
 
-// Generate random colors for initial grid
-function generateRandomColors() {
-  colors = [];
-  for (let i = 0; i < gridSize * (gridSize - 1); i++) {
-    colors.push(color(random(255), random(255), random(255), 210));
-  }
+function draw() {
+  // Nothing here for now
 }
 
-// Displays the color grid
+function generateRandomColorsAndNumbers() {
+  colors = [];
+  numbers = [];
+  for (let i = 0; i < gridSize * (gridSize - 1); i++) {
+    colors.push(color(random(255), random(255), random(255), 210));
+    numbers.push(floor(random(3, 24)));
+  }
+}
 function displayColorGrid() {
   for (let row = 0; row < gridSize - 1; row++) {
     for (let col = 0; col < gridSize; col++) {
@@ -38,15 +31,15 @@ function displayColorGrid() {
       let boxX = col * boxSize;
       let boxY = row * boxSize;
 
-      // Highlights selected boxes
+      // Highlights selected boxes with a black border
       if (selectedColors.includes(index)) {
-        stroke(48, 48, 48);
+        stroke(0);
         strokeWeight(2);
-        noFill();
+        fill(colors[index]);
         rect(boxX, boxY, boxSize, boxSize);
       } else {
-        fill(colors[index]);
         noStroke();
+        fill(colors[index]);
         rect(boxX, boxY, boxSize, boxSize);
       }
     }
@@ -54,62 +47,40 @@ function displayColorGrid() {
 }
 
 function mousePressed() {
-  if (!artGenerated) {
-    let col = floor(mouseX / boxSize);
-    let row = floor(mouseY / boxSize);
-    let index = row * gridSize + col;
+  let col = floor(mouseX / boxSize);
+  let row = floor(mouseY / boxSize);
+  let index = row * gridSize + col;
 
-    // checks if mouse is pressed within color grid
-    if (col >= 0 && col < gridSize && row >= 0 && row < gridSize - 1) {
-      if (selectedColors.includes(index)) {
-        selectedColors.splice(selectedColors.indexOf(index), 1);
-      } else {
-        selectedColors.push(index);
-      }
-      displayColorGrid();
+  if (col >= 0 && col < gridSize && row >= 0 && row < gridSize - 1) {
+    if (selectedColors.includes(index)) {
+      selectedColors.splice(selectedColors.indexOf(index), 1);
+    } else {
+      selectedColors.push(index);
     }
+    displayColorGrid();
   }
 }
 
 function generateArt() {
-  // create random art piece based on selected colors
-  artCanvas.clear();
-  artCanvas.background(255);
+  background(255);
+  for (let i = 0; i < selectedColors.length; i++) {
+    let index = selectedColors[i];
+    let colorValue = colors[index];
+    let numberValue = numbers[index];
 
-  for (let i = 0; i < 10; i++) {
-    let randomIndex = floor(random(selectedColors.length));
-    let selectedColor = colors[selectedColors[randomIndex]];
-
-    // randomly chooses shapes
-    let shapeChoice = floor(random(3));
-
-    // draws a random shape with seleected color
-    if (shapeChoice === 0) {
-      // random ellipse
-      fill(selectedColor);
-      noStroke();
-      let x = random(width);
-      let y = random(height);
-      let size = random(20, 100);
-      ellipse(x, y, size, size);
-    } else if (shapeChoice === 1) {
-      // random rectangle
-      fill(selectedColor);
-      noStroke();
-      let x = random(width);
-      let y = random(height);
-      let w = random(20, 100);
-      let h = random(20, 100);
-      rect(x, y, w, h);
+    if (numberValue % 2 === 0) {
+      fill(colorValue);
+      rect(random(width), random(height), 50, 50);
+    } else {
+      fill(colorValue);
+      ellipse(random(width), random(height), 50, 50);
     }
   }
-  artGenerated = true;
 }
 
-// resets the the canvas
 function resetCanvas() {
-  artCanvas.clear();
-  selectedColors = [];
+  background(255);
+  generateRandomColorsAndNumbers();
   displayColorGrid();
-  artGenerated = false;
+  selectedColors = []; // Clear the selected boxes
 }
