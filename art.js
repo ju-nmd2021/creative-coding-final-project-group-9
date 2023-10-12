@@ -41,6 +41,11 @@ function displayColorGrid() {
         noStroke();
         fill(colors[index]);
         rect(boxX, boxY, boxSize, boxSize);
+        // Display the asigned number
+        fill(0);
+        textSize(16);
+        textAlign(CENTER, CENTER);
+        text(numbers[index], boxX + boxSize / 2, boxY + boxSize / 2);
       }
     }
   }
@@ -62,25 +67,68 @@ function mousePressed() {
 }
 
 function generateArt() {
+  // Clear the canvas
   background(255);
+
+  // Sort selected colors by their brightness
+  selectedColors.sort((a, b) => brightness(colors[a]) - brightness(colors[b]));
+
+  // Calculate center of the canvas
+  let centerX = width / 2;
+  let centerY = height / 2;
+
+  // Draw concentric circles, rectangles, and lines
   for (let i = 0; i < selectedColors.length; i++) {
     let index = selectedColors[i];
     let colorValue = colors[index];
-    let numberValue = numbers[index];
+    let size = i * 20 + 40; // Varying size for each element
 
-    if (numberValue % 2 === 0) {
+    // Draw different shapes based on the number value
+    if (numbers[index] % 4 === 0) {
+      // Draw a circle
       fill(colorValue);
-      rect(random(width), random(height), 50, 50);
-    } else {
+      ellipse(centerX, centerY, size * 2, size * 2);
+    } else if (numbers[index] % 4 === 1) {
+      // Draw a rectangle
       fill(colorValue);
-      ellipse(random(width), random(height), 50, 50);
+      rect(centerX - size, centerY - size, size * 2, size * 2);
+    } else if (numbers[index] % 4 === 2) {
+      // Draw diagonal lines
+      stroke(colorValue);
+      strokeWeight(2);
+      line(centerX - size, centerY - size, centerX + size, centerY + size);
+      line(centerX - size, centerY + size, centerX + size, centerY - size);
+    } else if (numbers[index] % 4 === 3) {
+      // Draw a star pattern
+      drawStar(centerX, centerY, 5, size, size * 0.6);
+      fill(colorValue);
+      noStroke();
     }
   }
 }
 
+// Function to draw a star
+function drawStar(x, y, radius1, radius2, npoints) {
+  let angle = TWO_PI / npoints;
+  let halfAngle = angle / 2.0;
+  beginShape();
+  for (let a = -PI / 2; a < TWO_PI - PI / 2; a += angle) {
+    let sx = x + cos(a) * radius2;
+    let sy = y + sin(a) * radius2;
+    vertex(sx, sy);
+    sx = x + cos(a + halfAngle) * radius1;
+    sy = y + sin(a + halfAngle) * radius1;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
+}
+
 function resetCanvas() {
   background(255);
+
   generateRandomColorsAndNumbers();
+
   displayColorGrid();
-  selectedColors = []; // Clear the selected boxes
+
+  selectedColors = [];
 }
