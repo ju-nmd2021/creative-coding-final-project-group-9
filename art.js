@@ -5,15 +5,11 @@ let boxSize;
 let selectedColors = [];
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(600, 600);
   boxSize = width / gridSize;
   noLoop();
   generateRandomColorsAndNumbers();
   displayColorGrid();
-}
-
-function draw() {
-  // Nothing here for now
 }
 
 function generateRandomColorsAndNumbers() {
@@ -41,11 +37,6 @@ function displayColorGrid() {
         noStroke();
         fill(colors[index]);
         rect(boxX, boxY, boxSize, boxSize);
-        // Display the asigned number
-        fill(0);
-        textSize(16);
-        textAlign(CENTER, CENTER);
-        text(numbers[index], boxX + boxSize / 2, boxY + boxSize / 2);
       }
     }
   }
@@ -71,7 +62,7 @@ function generateArt() {
   background(255);
 
   // Sort selected colors by their brightness
-  selectedColors.sort((a, b) => brightness(colors[a]) - brightness(colors[b]));
+  selectedColors.sort((a, b) => brightness(colors[a]) - brightness(colors[b])); // Got help from chatgpt
 
   // Calculate center of the canvas
   let centerX = width / 2;
@@ -81,7 +72,7 @@ function generateArt() {
   for (let i = 0; i < selectedColors.length; i++) {
     let index = selectedColors[i];
     let colorValue = colors[index];
-    let size = i * 20 + 40; // Varying size for each element
+    let size = i * 20 + 40; // Varying size for each element, got help from chatgpt
 
     // Draw different shapes based on the number value
     if (numbers[index] % 4 === 0) {
@@ -132,3 +123,10 @@ function resetCanvas() {
 
   selectedColors = [];
 }
+
+// Save Art
+function saveArt() {
+  saveCanvas("generative_art", "png");
+}
+
+//
